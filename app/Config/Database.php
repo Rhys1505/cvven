@@ -26,30 +26,31 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
-        'DBDriver'     => 'MySQLi',
-        'DBPrefix'     => '',
-        'pConnect'     => false,
-        'DBDebug'      => true,
-        'charset'      => 'utf8mb4',
-        'DBCollat'     => 'utf8mb4_general_ci',
-        'swapPre'      => '',
-        'encrypt'      => false,
-        'compress'     => false,
-        'strictOn'     => false,
-        'failover'     => [],
-        'port'         => 3306,
-        'numberNative' => false,
-        'foundRows'    => false,
+        'hostname'     => 'localhost',  // Nom de l'hôte (ici, localhost)
+        'username'     => 'root',           // Ton nom d'utilisateur MySQL
+        'password'     => '',           // Ton mot de passe MySQL (laisser vide si aucune)
+        'database'     => 'cvven',      // Le nom de ta base de données
+        'DBDriver'     => 'MySQLi',     // Le type de driver à utiliser (MySQLi pour MySQL)
+        'DBPrefix'     => '',           // Préfixe des tables (laisser vide si pas de préfixe)
+        'pConnect'     => false,        // Si tu veux une connexion persistante (false pour non)
+        'DBDebug'      => (ENVIRONMENT !== 'development'),         // Pour afficher les erreurs SQL en mode débogage
+        'charset'      => 'utf8mb4',    // Encodage des caractères
+        'DBCollat'     => 'utf8mb4_general_ci',  // Collation (pour supporter les caractères spéciaux)
+        'swapPre'      => '',           // Préfixe de la base de données (laisser vide si pas de besoin)
+        'encrypt'      => false,        // Utilisation du chiffrement SSL pour la connexion (false pour non)
+        'compress'     => false,        // Compression des données échangées avec la BDD
+        'strictOn'     => false,        // Mode strict des SQL (false par défaut)
+        'failover'     => [],           // Options de failover (si besoin de bases secondaires)
+        'port'         => 3306,         // Le port de la base de données (3306 par défaut pour MySQL)
+        'numberNative' => false,        // Traitement natif des nombres
+        'foundRows'    => false,        // Retourner le nombre de lignes affectées après une requête
         'dateFormat'   => [
-            'date'     => 'Y-m-d',
-            'datetime' => 'Y-m-d H:i:s',
-            'time'     => 'H:i:s',
+            'date'     => 'Y-m-d',       // Format de date
+            'datetime' => 'Y-m-d H:i:s', // Format de date et heure
+            'time'     => 'H:i:s',       // Format d'heure
         ],
     ];
+
 
     //    /**
     //     * Sample database connection for SQLite3.
