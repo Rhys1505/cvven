@@ -14,13 +14,13 @@
         <nav>
             <img src="<?= base_url('public/img/logo1.png') ?>" alt="Logo" class="logo">
             <ul>
-                <li><a href="<?= base_url('/') ?>">Accueil</a></li>
-                <li><a href="">Mon compte</a></li>
-                <li><a href="<?= base_url('/login') ?>">Se connecter</a></li>
-                <li><a href="<?= base_url('/register') ?>">S'inscrire</a></li>
+                <li><a href="<?= base_url('/client') ?>">Accueil</a></li>
+                <li><a href="<?= base_url('/register') ?>">Mes réservations</a></li>
+                <li><a href="<?= base_url('/account') ?>">Mon compte</a></li>
+                <li><a href="<?= base_url('/logout') ?>">Se Déconnecter</a></li>
             </ul>
         </nav>
     </div>
-<h1>Accueil</h1>
+    <h1>Accueil</h1>
 </body>
 </html>
