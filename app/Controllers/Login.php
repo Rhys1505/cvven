@@ -42,12 +42,19 @@ class Login extends BaseController
     }
     public function connect()
     {
-        if (session()->get('isLoggedIn') && session()->get('role') == 'client') {
-            return view('client_page');
-        }elseif (session()->get('isLoggedIn') && session()->get('role') == 'admin') {
-            return view('admin_page');
-        }else{
-            return redirect()->to('/login');
+        if (session()->get('isLoggedIn')) {
+            $userModel = new UserModel();
+            $userId = session()->get('user_id');
+            $user = $userModel->find($userId);
+
+            if (session()->get('role') === 'client') {
+                return view('client_page', ['user' => $user]);
+            } elseif (session()->get('role') === 'admin') {
+                return view('admin_page', ['user' => $user]);
+            }
         }
+
+        return redirect()->to('/login');
     }
+
 }

@@ -22,5 +22,7 @@
         </nav>
     </div>
     <h1>Accueil</h1>
+    <div class="container">
+        <h2>Bienvenue, <?= esc($user['username']) ?>!</h2>
 </body>
 </html>

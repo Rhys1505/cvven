@@ -16,10 +16,13 @@
             <ul>
                 <li><a href="<?= base_url('/client') ?>">Accueil</a></li>
                 <li><a href="<?= base_url('/register') ?>">Gérer</a></li>
+                <li><a href="<?= base_url('/account') ?>">Mon compte</a></li>
                 <li><a href="<?= base_url('/logout') ?>">Se Déconnecter</a></li>
             </ul>
         </nav>
     </div>
     <h1>Accueil</h1>
+    <h2>Bienvenue !</h2>
+
 </body>
 </html>
