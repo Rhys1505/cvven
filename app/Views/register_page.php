@@ -43,6 +43,7 @@
                 <?= isset($validation) ? $validation->getError('email') : '' ?>
                 <br>
                 <input type="tel" id="number" name="number" pattern="[0-9]{10}" placeholder="Téléphone" class="input" required>
+                <?= isset($validation) ? $validation->getError('number') : '' ?>
                 <br>
                 <input type="password" id="password" name="password" placeholder="Mot de passe" class="input" required>
                 <?= isset($validation) ? $validation->getError('password') : '' ?>

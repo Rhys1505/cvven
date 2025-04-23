@@ -1,97 +1,142 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UserModel;
 
 class Client extends BaseController
 {
-    public function edit()
+    /**
+     * Affiche la page de gestion du compte
+     */
+    public function update()
     {
-        if (!session()->get('isLoggedIn')) {
+        if (! session()->get('isLoggedIn')) {
             return redirect()->to('/login');
         }
 
         $userModel = new UserModel();
-        $user = $userModel->find(session()->get('user_id'));
+        $userId    = session()->get('user_id');
+        $user      = $userModel->find($userId);
 
-        return view('account_page', ['user' => $user]);
+        return view('account_page', [
+            'user' => $user,
+        ]);
     }
 
     /**
-     * @throws \ReflectionException
+     * Traite la mise à jour des données profil (username, number…)
      */
     public function updateData()
     {
         helper(['form']);
 
-        $userModel = new UserModel();
-        $userId = session()->get('user_id');
-
-        $rules = [
-            'name'      => 'required',
-            'firstname' => 'required',
-            'email'     => 'required|valid_email',
-            'address'   => 'required',
-            'number'    => 'required|numeric|exact_length[10]',
-
-        ];
-
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+        if (! session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
         }
 
+        $userModel  = new UserModel();
+        $userId     = session()->get('user_id');
+        $primaryKey = $userModel->primaryKey;
+
+        // règles : on exclut l'enregistrement courant de la vérif d'unicité
+        $rules = [
+            'username' => [
+                'rules'  => "required|min_length[3]|is_unique[{$userModel->table}.username,{$primaryKey},{$userId}]",
+                'errors' => [
+                    'required'   => 'Le pseudonyme est obligatoire.',
+                    'min_length' => 'Le pseudonyme doit contenir au moins 3 caractères.',
+                    'is_unique'  => 'Ce pseudonyme est déjà pris.',
+                ],
+            ],
+            'number'   => [
+                'rules'  => "required|is_unique[{$userModel->table}.number,{$primaryKey},{$userId}]",
+                'errors' => [
+                    'required'  => 'Le numéro de téléphone est obligatoire.',
+                    'is_unique' => 'Ce numéro de téléphone est déjà pris.',
+                ],
+            ],
+        ];
+
+        // validation
+        if (! $this->validate($rules)) {
+            $user = $userModel->find($userId);
+
+            return view('account_page', [
+                'user'       => $user,
+                'validation' => $this->validator,
+                'old_input'  => $this->request->getPost(),
+            ]);
+        }
+
+        // préparation des données à sauvegarder
         $data = [
             'name'      => $this->request->getPost('name'),
             'firstname' => $this->request->getPost('firstname'),
+            'username'  => $this->request->getPost('username'),
             'email'     => $this->request->getPost('email'),
             'address'   => $this->request->getPost('address'),
             'number'    => $this->request->getPost('number'),
-
         ];
-        echo '<pre>';
-        print_r($data); // ← vérifie que tout est bien là
-        echo '</pre>';
 
-        $userModel->update($userId, $data);
+        // tentative de mise à jour
+        if ($userModel->update($userId, $data) === false) {
+            $user = $userModel->find($userId);
 
-        return redirect()->to('/connect')->with('success', 'Vos informations ont été mises à jour avec succès !');
+            return view('account_page', [
+                'user'      => $user,
+                'error_msg' => 'Erreur lors de la mise à jour.',
+            ]);
+        }
+
+        // succès
+        return redirect()
+            ->to('/account')
+            ->with('success', 'Vos informations ont été mises à jour avec succès !');
     }
 
-    public function UpdatePassword()
+    /**
+     * Traite la modification du mot de passe
+     */
+    public function updatePassword()
     {
-        // Vérifie si l'utilisateur est connecté
-        if (!session()->get('isLoggedIn')) {
+        helper(['form']);
+
+        if (! session()->get('isLoggedIn')) {
             return redirect()->to('/login');
         }
 
         $userModel = new UserModel();
-        $userId = session()->get('user_id');
-        $user = $userModel->find($userId);
+        $userId    = session()->get('user_id');
+        $user      = $userModel->find($userId);
 
-        // Récupère les données du formulaire
-        $oldPassword = $this->request->getPost('old_password');
-        $newPassword = $this->request->getPost('new_password');
-        $confirmPassword = $this->request->getPost('confirm_password');
+        // données du formulaire
+        $oldPwd     = $this->request->getPost('old_password');
+        $newPwd     = $this->request->getPost('new_password');
+        $confirmPwd = $this->request->getPost('confirm_password');
 
-        // Vérifie si l'ancien mot de passe est correct
-        if (!password_verify($oldPassword, $user['password'])) {
-            return redirect()->back()->with('error', 'L\'ancien mot de passe est incorrect.');
+        // 1) Ancien mot de passe
+        if (! password_verify($oldPwd, $user['password'])) {
+            return view('account_page', [
+                'user'      => $user,
+                'error_msg' => 'L’ancien mot de passe est incorrect.',
+            ]);
         }
 
-        // Vérifie si le nouveau mot de passe et la confirmation correspondent
-        if ($newPassword !== $confirmPassword) {
-            return redirect()->back()->with('error', 'Les nouveaux mots de passe ne correspondent pas.');
+        // 2) Confirmation
+        if ($newPwd !== $confirmPwd) {
+            return view('account_page', [
+                'user'      => $user,
+                'error_msg' => 'Les nouveaux mots de passe ne correspondent pas.',
+            ]);
         }
 
-        // Hash le nouveau mot de passe
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+        // 3) Hash et sauvegarde
+        $hashed = password_hash($newPwd, PASSWORD_DEFAULT);
+        $userModel->update($userId, ['password' => $hashed]);
 
-        // Met à jour le mot de passe dans la base de données
-        $userModel->update($userId, ['password' => $hashedPassword]);
-
-        // Redirige avec un message de succès
-        return redirect()->to('/account')->with('success', 'Votre mot de passe a été mis à jour.');
+        return redirect()
+            ->to('/account')
+            ->with('success', 'Votre mot de passe a été mis à jour.');
     }
-
-
 }

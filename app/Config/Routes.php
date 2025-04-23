@@ -18,7 +18,7 @@ $routes->post('/register/create', 'Register::create');
 
 $routes->get('/userlist', 'UserController::index');
 
-$routes->get('/account', 'Client::edit');
+$routes->get('/account', 'Client::update');
 $routes->post('/account/updateData', 'Client::updateData');
 $routes->post('/account/updatePassword', 'Client::updatePassword');
 

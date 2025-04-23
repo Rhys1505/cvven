@@ -33,6 +33,13 @@ class Register extends BaseController
                         'is_unique'     => 'Ce pseudonyme est déjà pris.',
                     ]
                 ],
+                'number' => [
+                    'rules' => 'required|is_unique[users.number]',
+                    'errors' => [
+                        'required'      => 'Le numéro de téléphone est obligatoire.',
+                        'is_unique'     => 'Ce numéro de téléphone est déjà pris.',
+                    ]
+                ],
                 'password' => [
                     'rules' => 'required|min_length[6]',
                     'errors' => [

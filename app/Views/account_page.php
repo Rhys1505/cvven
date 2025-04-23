@@ -34,13 +34,16 @@
 
     <form action="<?= base_url('/account/updateData') ?>" method="post">
         <label>Nom :</label>
-        <input type="text" name="name" value="<?= esc($user['name']) ?>"><br>
+        <input type="text" name="name" value="<?= esc($user['name']) ?>" readonly><br>
 
         <label>Prénom :</label>
-        <input type="text" name="firstname" value="<?= esc($user['firstname']) ?>"><br>
+        <input type="text" name="firstname" value="<?= esc($user['firstname']) ?>" readonly><br>
+
+        <label>Pseudonyme :</label>
+        <input type="text" name="username" value="<?= esc($user['username']) ?>"><br>
 
         <label>Email :</label>
-        <input type="email" name="email" value="<?= esc($user['email']) ?>"readonly><br>
+        <input type="email" name="email" value="<?= esc($user['email']) ?>" readonly><br>
 
         <label>Adresse :</label>
         <input type="text" name="address" value="<?= esc($user['address']) ?>"><br>
