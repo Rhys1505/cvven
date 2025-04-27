@@ -1,0 +1,142 @@
+
+.city-title, .bubble h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+.bubble ul {
+    padding-left: 20px; /* Décale la liste vers l'intérieur */
+    list-style-position: inside; /* Place les puces à l'intérieur */
+}
+
+.bubble li {
+    margin-bottom: 5px; /* Un peu d'espace entre chaque élément */
+}
+
+/* Carrousel général */
+.carousel, .room-carousel {
+    position: relative;
+    max-width: 100%;
+    margin: 20px 0;
+}
+
+/* Container des images */
+.slides, .room-slides {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Images de l'hôtel */
+.carousel .slide {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+
+/* Images des chambres */
+.room-slide {
+    width: 100%;
+    height: 400px; /* Tu peux ajuster ici pour les chambres */
+    object-fit: cover;
+}
+
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 2em;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+/* Styling des chambres */
+.room-card {
+    margin-bottom: 30px;
+}
+
+.room-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.room-card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.room-card li {
+    margin-bottom: 8px;
+}
+
+.reserve-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #f14c73b3;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.reserve-button:hover {
+    background-color:#f14c73b3;
+    color: white;
+}
+/* Style de la modale */
+.modal {
+    display: none; /* Par défaut, la modale est cachée */
+    position: fixed;
+    z-index: 1; /* S'assure que la modale est au-dessus des autres éléments */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8); /* Fond semi-transparent */
+}
+
+/* L'image dans la modale */
+.modal-content {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    display: block;
+    margin: auto;
+    border-radius: 10px;
+}
+
+
+/* Le texte sous l'image (légende) */
+#caption {
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+/* Le bouton de fermeture */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}

@@ -21,6 +21,11 @@ $routes->get('/userlist', 'UserController::index');
 $routes->get('/account', 'Client::update');
 $routes->post('/account/updateData', 'Client::updateData');
 $routes->post('/account/updatePassword', 'Client::updatePassword');
+$routes->get('/villes/paris', 'VilleController::paris');
+$routes->get('/villes/marseille', 'VilleController::marseille');
+$routes->get('/villes/lille', 'VilleController::lille');
+$routes->get('/villes/lyon', 'VilleController::lyon');
+$routes->get('/villes/rennes', 'VilleController::rennes');
 
 
 
